@@ -1,0 +1,42 @@
+.select {
+    margin-top: 30px;
+    margin-left: 100px;
+    padding-bottom: 30px;
+
+}
+
+.data_type {
+    width: 100px;
+    height: 30px;
+    border-radius: 3px;
+    border: solid 1px;
+    text-align: center;
+}
+
+input {
+    width: 100px;
+    height: 30px;
+    border-radius: 3px;
+    border: solid 1px gray;
+
+}
+
+#reload_btn {
+    margin-left: 30px !important;
+}
+
+
+.draw_container {
+    display: grid;
+    grid-template-columns: 700px 1000px;
+    grid-template-rows: 700px;
+}
+
+#grid {
+    margin-left: 100px;
+
+}
+
+#chart {
+    margin-left: 100px;
+}

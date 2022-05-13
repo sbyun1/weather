@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="weather">
+
+    <insert id="insert" parameterType="java.util.List">
+
+        <foreach item="item" collection="list" separator=";">
+            IF EXISTS(
+                SELECT FCSTDATE, CATEGORY FROM WEATHER
+                WHERE FCSTDATE = #{item.fcstDate} AND CATEGORY = #{item.category}
+            )
+            BEGIN
+                UPDATE WEATHER SET ${item.fcstTime} = ${item.fcstValue}
+                WHERE FCSTDATE = #{item.fcstDate} AND CATEGORY = #{item.category}
+
+            END
+
+            ELSE
+            BEGIN
+                INSERT INTO WEATHER(FCSTDATE, CATEGORY, ${item.fcstTime})
+                VALUES(#{item.fcstDate},#{item.category},${item.fcstValue})
+            END
+
+        </foreach>
+    </insert>
+
+    <select id="select" resultType="WeatherDto" parameterType="hashmap">
+        SELECT FCSTDATE, CATEGORY, FCSTTIME, FCSTVALUE
+        FROM
+        (
+            SELECT *
+            FROM WEATHER
+            WHERE CONVERT (DATETIME, FCSTDATE) BETWEEN #{start_date} AND #{end_date}
+            <if test='!data_type.equals("ALL")'>
+                AND CATEGORY = #{data_type}
+            </if>
+        ) AS ORIGINAL
+        UNPIVOT
+        (
+            FCSTVALUE for FCSTTIME IN (
+            T00, T01, T02, T03, T04,T05, T06, T07, T08, T09, T10, T11, T12,
+            T13, T14, T15, T16, T17, T18, T19, T20, T21, T22, T23)
+        ) AS UNPIVOT_W ORDER BY CATEGORY, FCSTDATE
+    </select>
+
+</mapper>
