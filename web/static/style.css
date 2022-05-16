@@ -30,11 +30,11 @@ input {
     display: grid;
     grid-template-columns: 700px 1000px;
     grid-template-rows: 700px;
+
 }
 
 #grid {
     margin-left: 100px;
-
 }
 
 #chart {

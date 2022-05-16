@@ -14,7 +14,7 @@
     <!--Excel 로 내보내기-->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.1/xlsx.full.min.js"></script>
 
-    <!--페이징-->
+    <!--toast grid 자체 페이징-->
     <link rel="stylesheet" href="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.css"/>
     <script src="https://uicdn.toast.com/tui.pagination/latest/tui-pagination.js"></script>
 

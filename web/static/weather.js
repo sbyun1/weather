@@ -1,3 +1,5 @@
+
+//화면 로드 시 api 호출, DB저장, 화면표시
 $.ajax({
     url: "api/weather",
     type: "POST",
@@ -35,45 +37,47 @@ function grid(res,data_type) {
     ];
 
     if(data_type === "ALL") {
+
         for (let i = 0; i <= (res.length / 2) - 1; i++) {
             time.push((res[i].fcstTime.substring(1, 3)) + '시');
-            weather_data = {"날짜": res[i].fcstDate, "시간": time[i], "습도": ((res[i].fcstValue) + "%")}
+            weather_data = {"날짜": res[i].fcstDate, "시간": time[i], "습도": res[i].fcstValue}
             weather.push(weather_data);
         }
 
         for (let i = res.length / 2; i <= res.length - 1; i++) {
             let index = i % (res.length / 2)
-            weather[index].온도 = ((res[i].fcstValue) + "°C");
+            weather[index].온도 = (res[i].fcstValue);
         }
 
         column.push(
+            {
+                header: '온도 (°C)',
+                name: '온도',
+                filter: 'number',
+                align: 'center'
+            }
+        )
+        column.push(
 
             {
-                header: '습도',
+                header: '습도 (%)',
                 name: '습도',
                 filter: 'number',
                 align: 'center'
             }
         )
 
-        column.push(
-            {
-                header: '온도',
-                name: '온도',
-                filter: 'number',
-                align: 'center'
-            }
-        )
+
     }
     else if(data_type === "REH"){
         for(let i = 0; i < res.length; i++){
             time.push((res[i].fcstTime.substring(1, 3)) + '시');
-            weather_data = {"날짜": res[i].fcstDate, "시간": time[i], "습도": ((res[i].fcstValue) + "%")}
+            weather_data = {"날짜": res[i].fcstDate, "시간": time[i], "습도": res[i].fcstValue}
             weather.push(weather_data);
         }
         column.push(
             {
-                header: '습도',
+                header: '습도 (%)',
                 name: '습도',
                 filter: 'number',
                 align: 'center'
@@ -83,12 +87,12 @@ function grid(res,data_type) {
     else if(data_type === "TMP"){
         for(let i = 0; i < res.length; i++){
             time.push((res[i].fcstTime.substring(1, 3)) + '시');
-            weather_data = {"날짜": res[i].fcstDate, "시간": time[i], "온도": ((res[i].fcstValue) + "°C")}
+            weather_data = {"날짜": res[i].fcstDate, "시간": time[i], "온도": res[i].fcstValue}
             weather.push(weather_data);
         }
         column.push(
             {
-                header: '온도',
+                header: '온도 (°C)',
                 name: '온도',
                 filter: 'number',
                 align: 'center'
@@ -108,7 +112,7 @@ function grid(res,data_type) {
         }
     });
 
-    tui.Grid.applyTheme('default');
+    tui.Grid.applyTheme('clean');
 
 }
 
@@ -237,14 +241,13 @@ $(function () {
     // console.log("내일: " + max_date);
     // console.log("어제: " + min_date);
 
-    $('.date_pick').attr('value', min_date);
+    $('#start_date').attr('value', min_date);
+    $('#end_date').attr('value',max_date);
     $('.date_pick').attr('min', min_date);
     $('.date_pick').attr('max', max_date);
 
-    $("#start_date").change(function () {
-        console.log('start date change');
 
-        $('#end_date').attr('value', $('#start_date').val());
+    $("#start_date").change(function () {
         $('#end_date').attr('min', $('#start_date').val());
         $('#end_date').attr('max', max_date);
     });
